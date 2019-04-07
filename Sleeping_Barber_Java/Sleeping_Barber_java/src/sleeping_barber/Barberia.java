@@ -20,26 +20,32 @@ public class Barberia extends Thread{
     
     public static final int SILLAS = 4;
     public static int NumeroSillasLibres = SILLAS;
-            
+    
+    public int CLIENTE_ID = 0;
+    
+    
     public static void main(String[] args) {
         Barberia barberia = new Barberia();
         barberia.start();
     }
     public void run()
-    {  
+    {
         Barbero b = new Barbero(); 
         b.start();
-
+        CLIENTE_ID = CLIENTE_ID++;
+        
+        
         /*Creando nuevos clientes */
-        for (int i=1; i<15; i++)
-        {
-            Cliente Cliente = new Cliente(i);
+//        for (int i=1; i<15; i++)
+  //      { 
+        
+            Cliente Cliente = new Cliente(CLIENTE_ID);
             Cliente.start();
             try
             {
                 sleep(2000);
             }
             catch(InterruptedException ex) {};
-        }
+    //    }
     }
 }
