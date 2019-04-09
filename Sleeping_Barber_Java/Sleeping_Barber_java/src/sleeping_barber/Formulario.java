@@ -1,13 +1,54 @@
 
 package sleeping_barber;
 
-public class Formulario extends javax.swing.JFrame {
+import java.util.concurrent.Semaphore;
+import javax.swing.DefaultListModel;
 
+public class Formulario extends javax.swing.JFrame {
+    
+    public static DefaultListModel modelo;
+    //Semáforo ayuda a contar los clientes que están esperando
+    public static Semaphore clientes;
+    //Semáforo que verifica el estado del barbero, si está disponible o no
+    public static Semaphore barbero;
+    //Mutex el cual permite a los clientes obtener un acceso exclusivo 
+    //al número de sillas libres, además permite incrementar o
+    //decrementar el numero de sillas disponibles
+    public static Semaphore AccesoSillas;
+    
+    public static int SILLAS;
+    public static int NumeroSillasLibres;
+    
+    public int CLIENTE_ID;
     /**
      * Creates new form Formulario
      */
     public Formulario() {
         initComponents();
+        clientes = new Semaphore(0); 
+        barbero = new Semaphore(0);
+        AccesoSillas = new Semaphore(1);
+        modelo= new DefaultListModel();
+        lstMensaje.setModel(modelo);
+        CLIENTE_ID = 0;
+        SILLAS = 4;
+        NumeroSillasLibres = SILLAS;
+        
+        Barbero b = new Barbero(); 
+        b.start();
+        CLIENTE_ID = CLIENTE_ID+1;
+        /*Creando nuevos clientes */
+        for (int i=1; i<10; i++)
+        {
+            Cliente c = new Cliente(i);
+            c.start();
+            try
+            {
+              c.sleep(3000);
+            }
+            catch(InterruptedException ex) {};
+        }
+        
     }
 
     /**
@@ -53,7 +94,7 @@ public class Formulario extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE)
                 .addContainerGap())
         );
 

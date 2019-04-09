@@ -29,7 +29,8 @@ public class Barbero extends Thread{
   
         public void CortarCabello()
         {
-            System.out.println("El barbero esta cortando el cabello del cliente ");
+            //System.out.println("El barbero esta cortando el cabello del cliente ");
+            Formulario.modelo.addElement("El barbero esta cortando el cabello del cliente.");
             try
             {
                 sleep(5000);
