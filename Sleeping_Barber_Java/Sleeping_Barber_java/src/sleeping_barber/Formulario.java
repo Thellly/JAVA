@@ -36,18 +36,18 @@ public class Formulario extends javax.swing.JFrame {
         
         Barbero b = new Barbero(); 
         b.start();
-        CLIENTE_ID = CLIENTE_ID+1;
-        /*Creando nuevos clientes */
-        for (int i=1; i<15; i++)
-        {
-            Cliente c = new Cliente(i);
-            c.start();
-            try
-            {
-              c.sleep(2000);
-            }
-            catch(InterruptedException ex) {};
-        }
+//        CLIENTE_ID = CLIENTE_ID+1;
+//        /*Creando nuevos clientes */
+//        for (int i=1; i<15; i++)
+//        {
+//            Cliente c = new Cliente(i);
+//            c.start();
+//            try
+//            {
+//              c.sleep(2000);
+//            }
+//            catch(InterruptedException ex) {};
+//        }
         
     }
 
@@ -102,8 +102,9 @@ public class Formulario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoClienteActionPerformed
-        // TODO add your handling code here:
-        //Codigo cliente
+        CLIENTE_ID = CLIENTE_ID+1;
+        Cliente c = new Cliente(CLIENTE_ID);
+        c.start();
     }//GEN-LAST:event_btnNuevoClienteActionPerformed
 
     /**
