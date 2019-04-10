@@ -36,12 +36,11 @@ public class Formulario extends javax.swing.JFrame {
         
         Barbero b = new Barbero(); 
         b.start();
-        
+//      CLIENTE_ID = CLIENTE_ID+1;
         /*Creando nuevos clientes */
 //        for (int i=1; i<15; i++)
 //        {
-//            CLIENTE_ID = CLIENTE_ID++;
-//            Cliente c = new Cliente(CLIENTE_ID);
+//            Cliente c = new Cliente(i);
 //            c.start();
 //            try
 //            {
