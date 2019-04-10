@@ -1,6 +1,7 @@
 
 package sleeping_barber;
 
+import static sleeping_barber.Formulario.*;
 /**
  *
  * @author Grupo1
@@ -20,20 +21,20 @@ public class Cliente  extends Thread{
         //Mientras el cliente no se ha cortado el cabello
             try
             {
-                Barberia.AccesoSillas.acquire(); 
-                if (Barberia.NumeroSillasLibres > 0)
+                AccesoSillas.acquire(); 
+                if (NumeroSillasLibres > 0)
                 {
                     //System.out.println("Cliente "+this.iD+" acaba de sentarse.");
                     Formulario.modelo.addElement("Cliente "+this.iD+" acaba de sentarse.");
                     //Cliente se sento en una silla, decrementamos número de sillas
-                    Barberia.NumeroSillasLibres--;
+                    NumeroSillasLibres--;
                     //Notificamos al barbero que hay un cliente sentado
-                    Barberia.clientes.release();
-                    Barberia.AccesoSillas.release();
+                    clientes.release();
+                    AccesoSillas.release();
                                                            
                     try
                     {
-                        Barberia.barbero.acquire();                       
+                        barbero.acquire();                       
                         ClienteSinCortar = false;
                         //Cliente cortándose el cabello
                         this.CortandoCabello(); 
@@ -45,7 +46,7 @@ public class Cliente  extends Thread{
                     //No hay asientos libres
                     //System.out.println("No hay asientos libres. Cliente " + this.iD + " ha dejado la barbería.");
                     Formulario.modelo.addElement("No hay asientos libres. Cliente " + this.iD + " ha dejado la barbería.");
-                    Barberia.AccesoSillas.release();
+                    AccesoSillas.release();
                     ClienteSinCortar=false;
                 }
             }

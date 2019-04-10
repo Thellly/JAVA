@@ -1,12 +1,14 @@
 
 package sleeping_barber;
 
+import static sleeping_barber.Formulario.*;
+
 /**
  *
  * @author Grupo1
  */
 public class Barbero extends Thread{
-    public Barbero() {}
+    
         public void run()
         {
             while(true)
@@ -14,14 +16,14 @@ public class Barbero extends Thread{
                 try
                 {
                     //Intenta adquirir un cliente, si no esta disponible duerme
-                    Barberia.clientes.acquire();                                       
+                    clientes.acquire();                                       
                     //El barbero ha sido despertado
-                    Barberia.AccesoSillas.acquire();
+                    AccesoSillas.acquire();
                     //Una silla se libera
-                    Barberia.NumeroSillasLibres++;
+                    NumeroSillasLibres++;
                     //El barbero esta listo para cortar
-                    Barberia.barbero.release();
-                    Barberia.AccesoSillas.release();
+                    barbero.release();
+                    AccesoSillas.release();
                     this.CortarCabello(); 
                 } catch (InterruptedException ex) {}
             }

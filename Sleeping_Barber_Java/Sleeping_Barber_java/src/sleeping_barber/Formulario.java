@@ -38,13 +38,13 @@ public class Formulario extends javax.swing.JFrame {
         b.start();
         CLIENTE_ID = CLIENTE_ID+1;
         /*Creando nuevos clientes */
-        for (int i=1; i<10; i++)
+        for (int i=1; i<15; i++)
         {
             Cliente c = new Cliente(i);
             c.start();
             try
             {
-              c.sleep(3000);
+              c.sleep(2000);
             }
             catch(InterruptedException ex) {};
         }
