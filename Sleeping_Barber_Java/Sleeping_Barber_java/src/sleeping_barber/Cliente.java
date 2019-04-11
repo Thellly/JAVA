@@ -24,11 +24,9 @@ public class Cliente  extends Thread{
                 AccesoSillas.acquire(); 
                 if (NumeroSillasLibres > 0)
                 {
-                    //System.out.println("Cliente "+this.iD+" acaba de sentarse.");
-                    Formulario.modelo.addElement("Cliente "+this.iD+" acaba de sentarse.");
-                    //Cliente se sento en una silla, decrementamos número de sillas
+                    Formulario.modelo.addElement("Ha entrado el cliente "+this.iD+".");
                     NumeroSillasLibres--;
-                    //Notificamos al barbero que hay un cliente sentado
+                    
                     clientes.release();
                     AccesoSillas.release();
                                                            
@@ -43,9 +41,7 @@ public class Cliente  extends Thread{
                 }  
                 else
                 {         
-                    //No hay asientos libres
-                    //System.out.println("No hay asientos libres. Cliente " + this.iD + " ha dejado la barbería.");
-                    Formulario.modelo.addElement("No hay asientos libres. Cliente " + this.iD + " ha dejado la barbería.");
+                    Formulario.modelo.addElement("Cliente " + this.iD + ": no hay asientos, regreso mas tarde.");
                     AccesoSillas.release();
                     ClienteSinCortar=false;
                 }
@@ -56,8 +52,7 @@ public class Cliente  extends Thread{
     
     public void CortandoCabello()
     {
-        //System.out.println("Cliente " + this.iD + " se está cortando el cabello");
-        Formulario.modelo.addElement("Cliente " + this.iD + " se está cortando el cabello.");
+        Formulario.modelo.addElement("Cortando el pelo al cliente " + this.iD + "");
         try
         {
             sleep(5050);

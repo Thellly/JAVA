@@ -1,41 +1,37 @@
-
 package sleeping_barber;
 
+import java.util.Random;
 import static sleeping_barber.Formulario.*;
 
-/**
- *
- * @author Grupo1
- */
 public class Barbero extends Thread{
-    
-        public void run()
-        {
-            while(true)
-            {
-                try
-                {
-                    //Intenta adquirir un cliente, si no esta disponible duerme
-                    clientes.acquire();                                       
-                    //El barbero ha sido despertado
-                    AccesoSillas.acquire();
-                    //Una silla se libera
-                    NumeroSillasLibres++;
-                    //El barbero esta listo para cortar
-                    barbero.release();
-                    AccesoSillas.release();
-                    this.CortarCabello(); 
-                } catch (InterruptedException ex) {}
-            }
+    @Override
+    public void run(){
+        while(true){
+            try{
+                //Intenta adquirir un cliente, si no esta disponible duerme
+                clientes.acquire();
+                //El barbero ha sido despertado
+                AccesoSillas.acquire();
+                //Una silla se libera
+                NumeroSillasLibres++;
+                //El barbero esta listo para cortar
+                barbero.release();
+                AccesoSillas.release();
+                this.CortarCabello(); 
+            } catch (InterruptedException ex) {}
         }
+    }
   
-        public void CortarCabello()
+    public void CortarCabello()
+    {
+        // Babero se demora de 3 a 6 segundos en cortar el cabello
+        Random rnd = new Random();
+        int tiempo = rnd.nextInt((6 - 3) + 1) + 3;
+                
+        //Formulario.modelo.addElement("Barbero: Termine mi trabajo");
+        try
         {
-            //System.out.println("El barbero esta cortando el cabello del cliente ");
-            Formulario.modelo.addElement("El barbero esta cortando el cabello del cliente.");
-            try
-            {
-                sleep(5000);
-            } catch (InterruptedException ex){ }
-        }
+            sleep(tiempo*1000);
+        }catch (InterruptedException ex){ }
+    }
 }
