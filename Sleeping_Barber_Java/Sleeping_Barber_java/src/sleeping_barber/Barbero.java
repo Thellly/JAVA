@@ -11,12 +11,12 @@ public class Barbero extends Thread{
                 //Intenta adquirir un cliente, si no esta disponible duerme
                 clientes.acquire();
                 //El barbero ha sido despertado
-                AccesoSillas.acquire();
+                asientosLibres.acquire();
                 //Una silla se libera
-                NumeroSillasLibres++;
+                nroAsientos++;
                 //El barbero esta listo para cortar
                 barbero.release();
-                AccesoSillas.release();
+                asientosLibres.release();
                 this.CortarCabello(); 
             } catch (InterruptedException ex) {}
         }

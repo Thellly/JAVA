@@ -21,14 +21,14 @@ public class Cliente  extends Thread{
         //Mientras el cliente no se ha cortado el cabello
             try
             {
-                AccesoSillas.acquire(); 
-                if (NumeroSillasLibres > 0)
+                asientosLibres.acquire(); 
+                if (nroAsientos > 0)
                 {
                     Formulario.modelo.addElement("Ha entrado el cliente "+this.iD+".");
-                    NumeroSillasLibres--;
+                    nroAsientos--;
                     
                     clientes.release();
-                    AccesoSillas.release();
+                    asientosLibres.release();
                                                            
                     try
                     {
@@ -42,7 +42,7 @@ public class Cliente  extends Thread{
                 else
                 {         
                     Formulario.modelo.addElement("Cliente " + this.iD + ": no hay asientos, regreso mas tarde.");
-                    AccesoSillas.release();
+                    asientosLibres.release();
                     ClienteSinCortar=false;
                 }
             }

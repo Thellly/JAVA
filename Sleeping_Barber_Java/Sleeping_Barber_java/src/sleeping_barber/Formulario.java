@@ -4,26 +4,27 @@ import javax.swing.DefaultListModel;
 
 public class Formulario extends javax.swing.JFrame {
     protected static DefaultListModel modelo;
+    
     protected static Semaphore clientes;
     protected static Semaphore barbero;
-    protected static Semaphore AccesoSillas;
-    protected static int SILLAS;
-    protected static int NumeroSillasLibres;
+    protected static Semaphore asientosLibres;
+    
+    protected static int nroAsientos;
     protected int CLIENTE_ID;
 
     public Formulario() {
         initComponents();
+        
         clientes = new Semaphore(0); 
         barbero = new Semaphore(0);
-        AccesoSillas = new Semaphore(1);
-        modelo= new DefaultListModel();
+        asientosLibres = new Semaphore(1);
+         modelo = new DefaultListModel();
+        
+        
         CLIENTE_ID = 0;
-        SILLAS = 4;
-        NumeroSillasLibres = SILLAS;
-        lstMensaje.setModel(modelo);
-        Formulario.modelo.addElement("Barbero: zZz...zZz...zZz...zZz...");
-        Barbero b = new Barbero(); 
-        b.start();
+        
+
+
     }
 
     @SuppressWarnings("unchecked")
@@ -33,6 +34,9 @@ public class Formulario extends javax.swing.JFrame {
         btnNuevoCliente = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         lstMensaje = new javax.swing.JList();
+        jLabel1 = new javax.swing.JLabel();
+        spnNroAsientos = new javax.swing.JSpinner();
+        btnStart = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -45,6 +49,15 @@ public class Formulario extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(lstMensaje);
 
+        jLabel1.setText("Numero de Asientos");
+
+        btnStart.setText("Empezar!");
+        btnStart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStartActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -53,13 +66,23 @@ public class Formulario extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnNuevoCliente)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnNuevoCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1)
+                    .addComponent(spnNroAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnStart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(71, 71, 71)
+                .addGap(20, 20, 20)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(spnNroAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(56, 56, 56)
+                .addComponent(btnStart)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnNuevoCliente)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
@@ -76,6 +99,16 @@ public class Formulario extends javax.swing.JFrame {
         Cliente c = new Cliente(CLIENTE_ID);
         c.start();
     }//GEN-LAST:event_btnNuevoClienteActionPerformed
+
+    private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
+        // TODO add your handling code here:
+        nroAsientos = (int)this.spnNroAsientos.getValue();
+        lstMensaje.setModel(modelo);
+        Formulario.modelo.addElement("Barbero: zZz...zZz...zZz...zZz...");
+        Barbero b = new Barbero(); 
+        b.start(); 
+
+    }//GEN-LAST:event_btnStartActionPerformed
 
 
     public static void main(String args[]) {
@@ -109,7 +142,10 @@ public class Formulario extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevoCliente;
+    private javax.swing.JButton btnStart;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList lstMensaje;
+    private javax.swing.JSpinner spnNroAsientos;
     // End of variables declaration//GEN-END:variables
 }
