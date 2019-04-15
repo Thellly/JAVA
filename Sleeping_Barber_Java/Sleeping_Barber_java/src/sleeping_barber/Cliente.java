@@ -1,19 +1,15 @@
-
 package sleeping_barber;
 
-import static sleeping_barber.Formulario.*;
-/**
- *
- * @author Grupo1
- */
+import static sleeping_barber.Barberia.*;
 public class Cliente  extends Thread{
-    int iD;
+    int clienteID;
     boolean ClienteSinCortar = true;
-    public Cliente(int i)
-    {
-        iD = i;
-    }
     
+    public Cliente(int id){
+        clienteID = id;
+    }
+        
+    @Override
     public void run()
     {  
         while (ClienteSinCortar)
@@ -21,18 +17,18 @@ public class Cliente  extends Thread{
         //Mientras el cliente no se ha cortado el cabello
             try
             {
-                asientosLibres.acquire(); 
-                if (nroAsientos > 0)
+                s_asientos.acquire(); 
+                if (asientos > 0)
                 {
-                    Formulario.modelo.addElement("Ha entrado el cliente "+this.iD+".");
-                    nroAsientos--;
+                    Barberia.barberia.addElement("Ha entrado el cliente "+this.clienteID+".");
+                    asientos--;
                     
-                    clientes.release();
-                    asientosLibres.release();
+                    s_clientes.release();
+                    s_asientos.release();
                                                            
                     try
                     {
-                        barbero.acquire();                       
+                        s_barbero.acquire();                       
                         ClienteSinCortar = false;
                         //Cliente cortándose el cabello
                         this.CortandoCabello(); 
@@ -41,8 +37,8 @@ public class Cliente  extends Thread{
                 }  
                 else
                 {         
-                    Formulario.modelo.addElement("Cliente " + this.iD + ": no hay asientos, regreso mas tarde.");
-                    asientosLibres.release();
+                    Barberia.barberia.addElement("Cliente " + this.clienteID + ": no hay asientos, regreso mas tarde.");
+                    s_asientos.release();
                     ClienteSinCortar=false;
                 }
             }
@@ -52,7 +48,7 @@ public class Cliente  extends Thread{
     
     public void CortandoCabello()
     {
-        Formulario.modelo.addElement("Cortando el pelo al cliente " + this.iD + "");
+        Barberia.barberia.addElement("Cortando el pelo al cliente " + this.clienteID + "");
         try
         {
             sleep(5050);

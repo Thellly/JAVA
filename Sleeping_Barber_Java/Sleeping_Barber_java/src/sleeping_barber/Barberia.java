@@ -1,30 +1,30 @@
 package sleeping_barber;
+
+import java.util.concurrent.CyclicBarrier;
+
 import java.util.concurrent.Semaphore;
 import javax.swing.DefaultListModel;
 
-public class Formulario extends javax.swing.JFrame {
-    protected static DefaultListModel modelo;
+public class Barberia extends javax.swing.JFrame {
+    protected static DefaultListModel barberia;
     
-    protected static Semaphore clientes;
-    protected static Semaphore barbero;
-    protected static Semaphore asientosLibres;
+    protected static Semaphore s_clientes;
+    protected static Semaphore s_barbero;
+    protected static Semaphore s_asientos;
+    public static CyclicBarrier barrier;
     
-    protected static int nroAsientos;
-    protected int CLIENTE_ID;
+    protected static int asientos;
+    protected int clienteID;
 
-    public Formulario() {
-        initComponents();
+    public Barberia() {
+        initComponents();   
         
-        clientes = new Semaphore(0); 
-        barbero = new Semaphore(0);
-        asientosLibres = new Semaphore(1);
-         modelo = new DefaultListModel();
+        s_clientes = new Semaphore(0); 
+        s_barbero  = new Semaphore(0);
         
-        
-        CLIENTE_ID = 0;
-        
-
-
+        barberia = new DefaultListModel();
+        barrier = new CyclicBarrier(1);
+        clienteID = 0;
     }
 
     @SuppressWarnings("unchecked")
@@ -35,7 +35,7 @@ public class Formulario extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         lstMensaje = new javax.swing.JList();
         jLabel1 = new javax.swing.JLabel();
-        spnNroAsientos = new javax.swing.JSpinner();
+        spnAsientos = new javax.swing.JSpinner();
         btnStart = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -69,7 +69,7 @@ public class Formulario extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnNuevoCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1)
-                    .addComponent(spnNroAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spnAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnStart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -79,7 +79,7 @@ public class Formulario extends javax.swing.JFrame {
                 .addGap(20, 20, 20)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spnNroAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(spnAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(56, 56, 56)
                 .addComponent(btnStart)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -95,17 +95,18 @@ public class Formulario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoClienteActionPerformed
-        CLIENTE_ID = CLIENTE_ID+1;
-        Cliente c = new Cliente(CLIENTE_ID);
+        clienteID += 1;
+        Cliente c = new Cliente(clienteID);
         c.start();
     }//GEN-LAST:event_btnNuevoClienteActionPerformed
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
-        // TODO add your handling code here:
-        nroAsientos = (int)this.spnNroAsientos.getValue();
-        lstMensaje.setModel(modelo);
-        Formulario.modelo.addElement("Barbero: zZz...zZz...zZz...zZz...");
-        Barbero b = new Barbero(); 
+        asientos = (int)this.spnAsientos.getValue();
+        s_asientos = new Semaphore(asientos);
+        
+        lstMensaje.setModel(barberia);
+//      Barberia.barberia.addElement("Barbero: zZz...zZz...zZz...zZz...");
+        Barbero b = new Barbero(clienteID); 
         b.start(); 
 
     }//GEN-LAST:event_btnStartActionPerformed
@@ -123,20 +124,12 @@ public class Formulario extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Formulario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Formulario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Formulario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Formulario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Barberia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Formulario().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Barberia().setVisible(true);
         });
     }
 
@@ -146,6 +139,6 @@ public class Formulario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList lstMensaje;
-    private javax.swing.JSpinner spnNroAsientos;
+    private javax.swing.JSpinner spnAsientos;
     // End of variables declaration//GEN-END:variables
 }

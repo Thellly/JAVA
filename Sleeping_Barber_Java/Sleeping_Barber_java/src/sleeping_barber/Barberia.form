@@ -30,7 +30,7 @@
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="btnNuevoCliente" max="32767" attributes="0"/>
                   <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="spnNroAsientos" min="-2" max="-2" attributes="0"/>
+                  <Component id="spnAsientos" min="-2" max="-2" attributes="0"/>
                   <Component id="btnStart" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -43,7 +43,7 @@
               <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="spnNroAsientos" min="-2" max="-2" attributes="0"/>
+              <Component id="spnAsientos" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
               <Component id="btnStart" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -88,7 +88,7 @@
         <Property name="text" type="java.lang.String" value="Numero de Asientos"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JSpinner" name="spnNroAsientos">
+    <Component class="javax.swing.JSpinner" name="spnAsientos">
     </Component>
     <Component class="javax.swing.JButton" name="btnStart">
       <Properties>
