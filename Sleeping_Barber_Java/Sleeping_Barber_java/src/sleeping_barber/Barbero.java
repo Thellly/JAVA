@@ -20,8 +20,10 @@ public class Barbero extends Thread{
                 
                 //El s_barbero ha sido despertado
                 s_asientos.acquire();
+                
                 //Una silla se libera
-                asientos++;
+                asientos++;                
+                
                 //El s_barbero esta listo para cortar
                 s_barbero.release();
                 s_asientos.release();
@@ -35,7 +37,7 @@ public class Barbero extends Thread{
         // Babero se demora de 3 a 6 segundos en cortar el cabello
         Random rnd = new Random();
         int tiempo = rnd.nextInt((6 - 3) + 1) + 3;
-                
+        tiempoCorte= tiempo*1000;
         //Formulario.barberia.addElement("Barbero: Termine mi trabajo");
         try
         {
