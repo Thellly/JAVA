@@ -58,7 +58,7 @@ public class Cliente  extends Thread{
         Barberia.barberia.addElement("Cortando el cabello al cliente " + this.clienteID + ".");
         try
         {
-            sleep(tiempoCorte+ 100);
+              sleep(5050);
 //            if(totalAsientos==asientos && this.clienteID!=1 && clientesIn==(totalClientes-clientesOut) && !s_asientos.tryAcquire())
             if(totalAsientos==asientos )
                Barberia.barberia.addElement("Barbero: zZz...zZz...zZz...zZz...");
