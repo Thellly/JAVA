@@ -28,6 +28,7 @@ public class Barbero extends Thread{
                 s_barbero.release();
                 s_asientos.release();
                 this.CortarCabello(); 
+                s_asientos.acquire();
             } catch (InterruptedException ex) {}
         }
     }

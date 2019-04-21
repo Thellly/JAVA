@@ -15,6 +15,7 @@ public class Barberia extends javax.swing.JFrame {
     
     protected static int tiempoCorte;
     protected static int totalAsientos;
+    protected static int totalClientes;
     protected static int asientos;
     protected int clienteID;
 
@@ -49,6 +50,7 @@ public class Barberia extends javax.swing.JFrame {
         btnNuevoCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/nuevo.png"))); // NOI18N
         btnNuevoCliente.setText("Cliente nuevo");
         btnNuevoCliente.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnNuevoCliente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnNuevoCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNuevoClienteActionPerformed(evt);
@@ -61,13 +63,14 @@ public class Barberia extends javax.swing.JFrame {
         jLabel1.setText("Numero de Asientos");
 
         btnStart.setText("Empezar!");
+        btnStart.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnStart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnStartActionPerformed(evt);
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Candara", 0, 24)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Candara", 1, 24)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Sleeping Barber");
 
@@ -114,7 +117,7 @@ public class Barberia extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnNuevoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -123,6 +126,7 @@ public class Barberia extends javax.swing.JFrame {
 
     private void btnNuevoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoClienteActionPerformed
         clienteID += 1;
+        totalClientes= clienteID;
         Cliente c = new Cliente(clienteID);
         c.start();
     }//GEN-LAST:event_btnNuevoClienteActionPerformed
@@ -130,7 +134,7 @@ public class Barberia extends javax.swing.JFrame {
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
         asientos = (int)this.spnAsientos.getValue();
         totalAsientos=asientos;
-        s_asientos = new Semaphore(asientos);
+        s_asientos = new Semaphore(1);
         
         lstMensaje.setModel(barberia);
 //      Barberia.barberia.addElement("Barbero: zZz...zZz...zZz...zZz...");

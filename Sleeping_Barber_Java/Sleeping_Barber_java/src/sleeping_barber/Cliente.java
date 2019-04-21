@@ -1,5 +1,8 @@
 package sleeping_barber;
 
+import java.util.concurrent.BrokenBarrierException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static sleeping_barber.Barberia.*;
 public class Cliente  extends Thread{
     int clienteID;
@@ -34,12 +37,14 @@ public class Cliente  extends Thread{
                         ClienteSinCortar = false;
                         //Cliente cortándose el cabello
                         this.CortandoCabello(); 
+                        s_asientos.release(); 
                     }
                     catch (InterruptedException ex) {}
                 }  
                 else
                 {         
-                    Barberia.barberia.addElement("Cliente " + this.clienteID + ": no hay asientos, regreso más tarde.");
+                    Barberia.barberia.addElement("Cliente " + this.clienteID + ": No hay asientos, regreso más tarde.");
+                    
                     s_asientos.release();
                     ClienteSinCortar=false;
                 }
@@ -50,13 +55,14 @@ public class Cliente  extends Thread{
     
     public void CortandoCabello()
     {
-        Barberia.barberia.addElement("Cortando el pelo al cliente " + this.clienteID + ".");
+        Barberia.barberia.addElement("Cortando el cabello al cliente " + this.clienteID + ".");
         try
         {
-            sleep(tiempoCorte+ 50);
-            if(totalAsientos==asientos && this.clienteID!=1)
+            sleep(tiempoCorte+ 100);
+//            if(totalAsientos==asientos && this.clienteID!=1 && clientesIn==(totalClientes-clientesOut) && !s_asientos.tryAcquire())
+            if(totalAsientos==asientos )
                Barberia.barberia.addElement("Barbero: zZz...zZz...zZz...zZz...");
-                
-        }catch(InterruptedException ex){}
+           
+        }catch(Exception e) {}
     }
 }
