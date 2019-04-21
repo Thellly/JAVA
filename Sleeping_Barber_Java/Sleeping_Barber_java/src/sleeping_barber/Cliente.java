@@ -50,7 +50,7 @@ public class Cliente  extends Thread{
     
     public void CortandoCabello()
     {
-        Barberia.barberia.addElement("Cortando el pelo al cliente " + this.clienteID + "");
+        Barberia.barberia.addElement("Cortando el pelo al cliente " + this.clienteID + ".");
         try
         {
             sleep(tiempoCorte+ 50);

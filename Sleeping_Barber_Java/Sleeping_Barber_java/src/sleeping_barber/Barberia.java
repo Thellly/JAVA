@@ -136,7 +136,7 @@ public class Barberia extends javax.swing.JFrame {
 //      Barberia.barberia.addElement("Barbero: zZz...zZz...zZz...zZz...");
         Barbero b = new Barbero(clienteID); 
         b.start(); 
-
+        btnStart.setEnabled(false);
     }//GEN-LAST:event_btnStartActionPerformed
 
 
