@@ -19,7 +19,7 @@ public class Cliente  extends Thread{
                 Barberia.s_asientos.acquire(); 
                 if (Barberia.asientos > 0)
                 {
-                    Barberia.barberia.addElement("Ha entrado el cliente " + this.clienteID + ".");
+                    Barberia.output.addElement("Ha entrado el cliente " + this.clienteID + ".");
                     Barberia.asientos--;
                     //Notificamos al barbero que hay un cliente sentado
                     Barberia.s_clientes.release();
@@ -37,7 +37,7 @@ public class Cliente  extends Thread{
                 }  
                 else
                 {         
-                    Barberia.barberia.addElement("Cliente " + this.clienteID + ": No hay asientos, regreso más tarde.");
+                    Barberia.output.addElement("Cliente " + this.clienteID + ": No hay asientos, regreso más tarde.");
                     Barberia.s_asientos.release();
                     ClienteSinCortar = false;
                 }
@@ -50,6 +50,6 @@ public class Cliente  extends Thread{
     
     public void CortandoCabello()
     {
-        Barberia.barberia.addElement("Cortando el cabello al cliente " + this.clienteID + ".");
+        Barberia.output.addElement("Cortando el cabello al cliente " + this.clienteID + ".");
     }
 }

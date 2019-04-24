@@ -1,6 +1,8 @@
 package sleeping_barber;
 
 import java.util.Random;
+import javax.swing.ImageIcon;
+import javax.swing.JList;
 
 public class Barbero extends Thread{
     int cliente;
@@ -12,8 +14,12 @@ public class Barbero extends Thread{
     public void run(){
         while(true){
             try{
-                if(!Barberia.s_clientes.tryAcquire())
-                    Barberia.barberia.addElement("Barbero: zZzZzz...zZzZzz...zZzZzz...");
+                if(!Barberia.s_clientes.tryAcquire()){
+                    Barberia.output.addElement("Barbero: zZzZzz...zZzZzz...zZzZzz...");
+//                    Barberia.output.addElement(new Icon("Barbero:", new ImageIcon("d:\\sleep.png")));
+//                    JList list = new JList(Barberia.output);
+//                    list.setCellRenderer(new ListEntryCellRenderer());
+                }
                 //Barberia.s_clientes.acquire();
                 Barberia.s_asientos.acquire();
                 Barberia.asientos++;                
@@ -31,7 +37,7 @@ public class Barbero extends Thread{
     {
         // Babero se demora de 4 a 6 segundos en cortar el cabello
         Random rnd = new Random();
-        int tiempo = rnd.nextInt(4) + 4;
+        int tiempo = rnd.nextInt(4) + 3;
         try{
             sleep(tiempo * 1000);
         }catch (Exception e){
