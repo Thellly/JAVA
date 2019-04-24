@@ -1,7 +1,5 @@
 package sleeping_barber;
 
-import java.util.concurrent.CyclicBarrier;
-
 import java.util.concurrent.Semaphore;
 import javax.swing.DefaultListModel;
 
@@ -11,24 +9,20 @@ public class Barberia extends javax.swing.JFrame {
     protected static Semaphore s_clientes;
     protected static Semaphore s_barbero;
     protected static Semaphore s_asientos;
-    public static CyclicBarrier barrier;
     
-    protected static int tiempoCorte;
-    protected static int totalAsientos;
-    protected static int totalClientes;
     protected static int asientos;
-    protected int clienteID;
+    protected static int espacios;
+    
+    protected int cliente;
 
     public Barberia() {
-        initComponents();   
         setLocationRelativeTo(null);
-        
-        s_clientes = new Semaphore(0); 
-        s_barbero  = new Semaphore(0);
-        
+        initComponents();   
         barberia = new DefaultListModel();
-        barrier = new CyclicBarrier(1);
-        clienteID = 0;
+        Barberia.s_clientes = new Semaphore(0); 
+        Barberia.s_barbero  = new Semaphore(0);
+        Barberia.s_asientos = new Semaphore(1);
+        cliente = 0;
     }
 
     @SuppressWarnings("unchecked")
@@ -46,7 +40,10 @@ public class Barberia extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sleeping Barber");
         setBackground(new java.awt.Color(255, 255, 255));
+        setName("sleeping_barber"); // NOI18N
+        setResizable(false);
 
+        btnNuevoCliente.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnNuevoCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/nuevo.png"))); // NOI18N
         btnNuevoCliente.setText("Cliente nuevo");
         btnNuevoCliente.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -59,10 +56,13 @@ public class Barberia extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(lstMensaje);
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Numero de Asientos");
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel1.setText("Asientos:");
 
-        btnStart.setText("Empezar!");
+        spnAsientos.setModel(new javax.swing.SpinnerNumberModel(1, 1, 15, 1));
+
+        btnStart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/empezar.png"))); // NOI18N
+        btnStart.setActionCommand("");
         btnStart.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnStart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -81,25 +81,21 @@ public class Barberia extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addComponent(btnStart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnNuevoCliente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addContainerGap())
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(43, 43, 43)
+                                .addGap(2, 2, 2)
                                 .addComponent(spnAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnStart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnNuevoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -111,10 +107,10 @@ public class Barberia extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spnAsientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(46, 46, 46)
-                        .addComponent(btnStart, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnStart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(spnAsientos))
+                        .addGap(18, 18, 18)
                         .addComponent(btnNuevoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE))
@@ -125,24 +121,20 @@ public class Barberia extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNuevoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoClienteActionPerformed
-        clienteID += 1;
-        totalClientes= clienteID;
-        Cliente c = new Cliente(clienteID);
+        cliente += 1;
+        Cliente c = new Cliente(cliente);
         c.start();
     }//GEN-LAST:event_btnNuevoClienteActionPerformed
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
         asientos = (int)this.spnAsientos.getValue();
-        totalAsientos=asientos;
-        s_asientos = new Semaphore(1);
+        espacios = asientos;
         
         lstMensaje.setModel(barberia);
-//      Barberia.barberia.addElement("Barbero: zZz...zZz...zZz...zZz...");
-        Barbero b = new Barbero(clienteID); 
+        Barbero b = new Barbero(cliente); 
         b.start(); 
         btnStart.setEnabled(false);
     }//GEN-LAST:event_btnStartActionPerformed
-
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
