@@ -1,19 +1,15 @@
 package sleeping_barber;
 
-import java.awt.BorderLayout;
 import java.util.concurrent.Semaphore;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
+
 
 public class Barberia extends javax.swing.JFrame {
     protected static DefaultListModel output;
     
     protected static Semaphore s_clientes;
     protected static Semaphore s_barbero;
-    protected static Semaphore s_asientos;
+    protected static Semaphore s_mutex;
     
     protected static int asientos;
     protected static int espacios;
@@ -26,7 +22,7 @@ public class Barberia extends javax.swing.JFrame {
         output = new DefaultListModel();
         Barberia.s_clientes = new Semaphore(0); 
         Barberia.s_barbero  = new Semaphore(0);
-        Barberia.s_asientos = new Semaphore(1);
+        Barberia.s_mutex    = new Semaphore(1);
         cliente = 0;
     }
 
@@ -59,6 +55,7 @@ public class Barberia extends javax.swing.JFrame {
             }
         });
 
+        lstMensaje.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jScrollPane1.setViewportView(lstMensaje);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -141,23 +138,6 @@ public class Barberia extends javax.swing.JFrame {
     }//GEN-LAST:event_btnStartActionPerformed
 
     public static void main(String args[]) {
-                JFrame frame = new JFrame("JList ImageIcon Demonstration");
-  
-//      DefaultListModel dlm = new DefaultListModel();
-//      dlm.addElement(new Icon("Audio", new ImageIcon("d:\\descarga.png")));
-//      dlm.addElement(new Icon("Control Panel", new ImageIcon("controlpanel.gif")));
-//      dlm.addElement(new Icon("Folder", new ImageIcon("folder.gif")));
-//      dlm.addElement(new Icon("Local Disk (C:)", new ImageIcon("mycomp.gif")));
-//      dlm.addElement(new Icon("doc on '192.168.0.1' (Z:)", new ImageIcon("network.gif")));
-//  
-//      JList list = new JList(dlm);
-//      list.setCellRenderer(new ListEntryCellRenderer());
-//          
-//      frame.getContentPane().add(BorderLayout.CENTER, new JScrollPane(list));
-//      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//      frame.pack();
-//      frame.setVisible(true);
-        
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -176,14 +156,7 @@ public class Barberia extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             new Barberia().setVisible(true);
         });
-        
-        
-        
-
-        
-        
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNuevoCliente;
     private javax.swing.JButton btnStart;

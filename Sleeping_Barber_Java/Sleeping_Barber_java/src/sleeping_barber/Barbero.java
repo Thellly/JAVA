@@ -1,8 +1,7 @@
 package sleeping_barber;
 
 import java.util.Random;
-import javax.swing.ImageIcon;
-import javax.swing.JList;
+
 
 public class Barbero extends Thread{
     int cliente;
@@ -21,11 +20,11 @@ public class Barbero extends Thread{
 //                    list.setCellRenderer(new ListEntryCellRenderer());
                 }
                 //Barberia.s_clientes.acquire();
-                Barberia.s_asientos.acquire();
+                Barberia.s_mutex.acquire();
                 Barberia.asientos++;                
 
                 Barberia.s_barbero.release();
-                Barberia.s_asientos.release();
+                Barberia.s_mutex.release();
                 this.CortarCabello(); 
             } catch (Exception e){
                 System.out.println(e.getMessage());

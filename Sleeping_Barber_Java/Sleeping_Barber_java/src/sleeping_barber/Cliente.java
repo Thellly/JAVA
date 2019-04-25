@@ -2,7 +2,7 @@ package sleeping_barber;
 
 public class Cliente  extends Thread{
     int clienteID;
-    boolean ClienteSinCortar = true;
+    boolean ClientesEsperando = true;
     
     public Cliente(int id){
         clienteID = id;
@@ -11,38 +11,37 @@ public class Cliente  extends Thread{
     @Override
     public void run()
     {  
-        while (ClienteSinCortar)
+        while (ClientesEsperando)
         {
             //Mientras el cliente no se ha cortado el cabello
             try
             {
-                Barberia.s_asientos.acquire(); 
+                
+                Barberia.s_mutex.acquire();
+                
                 if (Barberia.asientos > 0)
                 {
                     Barberia.output.addElement("Ha entrado el cliente " + this.clienteID + ".");
-                    Barberia.asientos--;
-                    //Notificamos al barbero que hay un cliente sentado
-                    Barberia.s_clientes.release();
-                    Barberia.s_asientos.release();
-                    try
+                    
+                    Barberia.asientos--;                    
+                    Barberia.s_mutex.release();
+                    //if(Barberia.s_barbero.tryAcquire())
                     {
-                        Barberia.s_barbero.acquire();                       
-                        ClienteSinCortar = false;
+                        Barberia.s_barbero.acquire();
+                        Barberia.s_clientes.release();
+                        ClientesEsperando = false;
                         //Cliente cortándose el cabello
                         this.CortandoCabello(); 
-                    }
-                    catch (Exception e) {
-                        System.out.println(e.getMessage());
                     }
                 }  
                 else
                 {         
                     Barberia.output.addElement("Cliente " + this.clienteID + ": No hay asientos, regreso más tarde.");
-                    Barberia.s_asientos.release();
-                    ClienteSinCortar = false;
+                    Barberia.s_mutex.release();
+                    ClientesEsperando = false;
                 }
             }
-            catch (Exception e) {
+            catch (InterruptedException e) {
                 System.out.println(e.getMessage());
             }
         }
