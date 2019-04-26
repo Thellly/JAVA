@@ -17,8 +17,8 @@ public class Barberia extends javax.swing.JFrame {
     protected int cliente;
 
     public Barberia() {
-        setLocationRelativeTo(null);
         initComponents();   
+        setLocationRelativeTo(null);
         output = new DefaultListModel();
         Barberia.s_clientes = new Semaphore(0); 
         Barberia.s_barbero  = new Semaphore(0);
