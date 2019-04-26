@@ -15,11 +15,7 @@ public class Barbero extends Thread{
             try{
                 if(!Barberia.s_clientes.tryAcquire()){
                     Barberia.output.addElement("Barbero: zZzZzz...zZzZzz...zZzZzz...");
-//                    Barberia.output.addElement(new Icon("Barbero:", new ImageIcon("d:\\sleep.png")));
-//                    JList list = new JList(Barberia.output);
-//                    list.setCellRenderer(new ListEntryCellRenderer());
                 }
-                //Barberia.s_clientes.acquire();
                 Barberia.s_mutex.acquire();
                 Barberia.asientos++;                
 

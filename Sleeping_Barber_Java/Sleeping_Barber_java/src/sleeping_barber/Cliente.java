@@ -1,5 +1,7 @@
 package sleeping_barber;
 
+import java.awt.Color;
+
 public class Cliente  extends Thread{
     int clienteID;
     boolean ClientesEsperando = true;
@@ -16,23 +18,18 @@ public class Cliente  extends Thread{
             //Mientras el cliente no se ha cortado el cabello
             try
             {
-                
                 Barberia.s_mutex.acquire();
+                Barberia.output.addElement("Barberia: Ha entrado el cliente " + this.clienteID + ".");
                 
                 if (Barberia.asientos > 0)
                 {
-                    Barberia.output.addElement("Ha entrado el cliente " + this.clienteID + ".");
-                    
                     Barberia.asientos--;                    
                     Barberia.s_mutex.release();
-                    //if(Barberia.s_barbero.tryAcquire())
-                    {
-                        Barberia.s_barbero.acquire();
-                        Barberia.s_clientes.release();
-                        ClientesEsperando = false;
-                        //Cliente cortándose el cabello
-                        this.CortandoCabello(); 
-                    }
+                    Barberia.s_barbero.acquire();
+                    Barberia.s_clientes.release();
+                    ClientesEsperando = false;
+                    
+                    this.CortandoCabello(); 
                 }  
                 else
                 {         
