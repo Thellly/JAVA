@@ -15,7 +15,7 @@ public class Barberia extends javax.swing.JFrame {
     protected static int espacios;
     
     protected int cliente;
-
+ 
     public Barberia() {
         initComponents();   
         setLocationRelativeTo(null);
